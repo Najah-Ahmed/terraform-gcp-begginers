@@ -14,7 +14,36 @@ resource "google_compute_instance" "vm_instance" {
     }
   }
   metadata = {
-    ssh-keys = "INSERT_USERNAME:${file("~/.ssh/id_rsa_gcp.pub")}"
+    ssh-keys = "najah:${file("~/.ssh/id_rsa_gcp.pub")}"
+  }
+
+  network_interface {
+    # A default network is created for all GCP projects
+    network = "default"
+    access_config {
+    }
+  }
+  # output "ip" {
+  #   value = google_compute_instance.default.network_interface.0.access_config.0.nat_ip
+  # }
+  # allow {
+  #   protocol = "tcp"
+  #   ports    = ["5000"]
+  # }
+
+}
+
+resource "google_compute_instance" "vm_instance2" {
+  name         = "terraform-instance-njh"
+  machine_type = "f1-micro"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
+  metadata = {
+    ssh-keys = "najah:${file("~/.ssh/id_rsa_gcp.pub")}"
   }
 
   network_interface {
